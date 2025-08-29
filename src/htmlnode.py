@@ -14,15 +14,6 @@ class HTMLNode ():
         raise NotImplementedError
     
     def props_to_html(self):
-        # if self.props is None: 
-        #     return ""
-        
-        # compiled_props = ""
-        # for k,v in self.props.items():
-        #     compiled_props += f' {k}="{v}"'
-
-        # return compiled_props
-        #Works, but kinda unreadable
         return ("".join( f' {k}="{v}"' for k,v in self.props.items()) if self.props is not None else "")
 
     def __repr__(self):
