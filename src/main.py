@@ -1,25 +1,29 @@
 import os
 import shutil
+import sys
 from gencontent import generate_pages_recursive
 from textnode import *
 
 def main():
-    handle_files()
+    #handle_files()
+    basepath = "/" if len(sys.argv) <= 1 else sys.argv[1]
+    handle_files(basepath)
+    
 
-def handle_files():
-    public_root = "./public"
+def handle_files(basepath):
+    content_root = "./content"
+    deploy_root = "./docs"
     static_root = "./static"
 
-    delete_public()
-    copy_contents(static_root, public_root)
-    generate_pages_recursive("./content", "template.html", "./public")
+    delete_folder(deploy_root)
+    copy_contents(static_root, deploy_root)
+    generate_pages_recursive(content_root, "template.html", deploy_root, basepath)
     #generate_page("content/index.md", "template.html", "public/index.html")
         
-def delete_public():
-    public_root = "./public"
-    print("Deleting public directory...")
-    if os.path.exists(public_root):
-        shutil.rmtree(public_root)
+def delete_folder(delete_target):
+    print(f"Deleting {delete_target} directory...")
+    if os.path.exists(delete_target):
+        shutil.rmtree(delete_target)
 
 def copy_contents(curr_path, destination_path):
     if not os.path.exists(destination_path):
@@ -36,8 +40,5 @@ def copy_contents(curr_path, destination_path):
             shutil.copy(full_orig_path, full_dest_path)
         else:
             copy_contents(full_orig_path, full_dest_path)
-
-
-
 
 main()
